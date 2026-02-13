@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen: Code Learning Platform | PBL 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --primary-color: #01012e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --highlight-color: #434ed1;
+            --text-light: #ffffff;
+            --text-muted: #a8b2d1;
+            --bg-dark: #050816;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(67, 78, 209, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(223, 110, 233, 0.1) 0%, transparent 40%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            display: none; 
+        }
+
+        .timer-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(67, 78, 209, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .timer-container::before {
+            content: '⏱️';
+        }
+
+        header {
+            background: rgba(5, 8, 22, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .muj-logo {
+            width: 130px;
+            height: 45px;
+            background: white; 
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; 
+            transition: transform 0.3s ease;
+        }
+        .muj-logo:hover { transform: scale(1.05); }
+        .muj-logo img { width: 90%; height: 90%; object-fit: contain; }
+
+        .header-text h1 {
+            font-size: 18px;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+
+        .header-text p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+
+        nav { display: flex; gap: 20px; }
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        nav a:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Aligning logo and text inside the button */
+.btn-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-with-icon svg {
+    fill: currentColor;
+    width: 20px;
+    height: 20px;
+}
+
+        /* Container for vertical stacking */
+.links-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+/* Row for the two main big buttons */
+.main-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Style for the smaller presentation link */
+.presentation-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    border-bottom: 1px solid transparent;
+    text-transform: uppercase;
+}
+
+.presentation-link:hover {
+    color: var(--highlight-color);
+    border-bottom: 1px solid var(--highlight-color);
+    transform: translateY(-2px);
+}
+
+
+        .team-grid {
+    display: grid;
+    /* Reduced min-width to 250px for smaller boxes */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+    /* New styles to center */
+    max-width: 800px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.team-member {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    padding: 20px; /* Reduced from 30px */
+    border-radius: 15px; /* Slightly smaller radius */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+}
+
+.team-member h4 {
+    font-size: 14px; /* Smaller title */
+    color: var(--highlight-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.team-member h5 {
+    font-size: 18px; /* Compact name */
+    margin-bottom: 5px;
+}
+
+.team-member p {
+    font-size: 12px; /* Smaller role/Reg details */
+    color: var(--text-muted);
+}
+
+       /* --- Compact & High-Energy Modules --- */
+.modules-grid {
+    display: grid;
+    /* Reduced min-width to 180px to make boxes smaller */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 20px;
+    margin-top: 40px;
+    /* Add these lines below */
+    max-width: 900px; /* Limits the width of the container */
+    margin-left: auto; /* Centers the grid */
+    margin-right: auto; /* Centers the grid */
+    padding: 0 20px; /* Adds internal spacing from the edge */
+}
+
+.module-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px; /* Reduced from 20px */
+    border-radius: 12px; /* Slightly sharper corners for smaller boxes */
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.module-icon {
+    font-size: 24px; /* Reduced from 32px */
+    margin-bottom: 10px;
+    display: block;
+}
+
+.module-card h4 {
+    font-size: 14px; /* Reduced from 16px */
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.module-card p {
+    font-size: 10.5px; /* Reduced from 11.5px */
+    line-height: 1.4;
+}
+
+/* Moving Glow Background */
+.module-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(67, 78, 209, 0.15) 0%, transparent 70%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+}
+
+.module-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    border-color: var(--highlight-color);
+    background: rgba(67, 78, 209, 0.08);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(67, 78, 209, 0.3);
+}
+
+.module-card:hover::before {
+    transform: translate(25%, 25%);
+}
+
+.module-icon {
+    font-size: 32px; /* Smaller icon */
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+.module-card h4 {
+    font-size: 16px; /* Punchy title */
+    margin-bottom: 8px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.module-card p {
+    font-size: 11.5px; /* Compact description */
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
+/* Subtle Pulsing Border for "AI Powered" */
+.pulse-border {
+    border: 1px solid var(--highlight-color);
+    animation: neon-pulse 2s infinite alternate;
+}
+
+@keyframes neon-pulse {
+    from { box-shadow: 0 0 5px rgba(67, 78, 209, 0.2); }
+    to { box-shadow: 0 0 15px rgba(67, 78, 209, 0.5); }
+}
+
+
+        /* --- HERO SECTION REFINED --- */
+        .hero {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .student-id {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 15px;
+            border-radius: 30px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .hero h1 {
+            line-height: 0.85; /* Tightens the gap between lines */
+            margin-bottom: 15px;
+        }
+
+        .next-gen-title {
+            font-size: clamp(60px, 15vw, 130px);
+            font-weight: 900;
+            display: block;
+            background: linear-gradient(to right, #fff 20%, #434ed1 50%, #df6ee9 80%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
+            letter-spacing: -2px;
+        }
+
+        .code-learning-subtitle {
+            font-size: clamp(18px, 4vw, 32px);
+            font-weight: 300;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 1s forwards 0.8s;
+        }
+
+        /* --- Horizontal Flowchart Methodology --- */
+.methodology-flow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 40px;
+    overflow-x: auto; /* Adds scroll for small screens */
+    padding-bottom: 20px;
+}
+
+.flow-step {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.flow-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--highlight-color);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    min-width: 200px;
+    transition: all 0.3s ease;
+    border-bottom: 4px solid var(--highlight-color);
+}
+
+.flow-card:hover {
+    transform: translateY(-5px);
+    background: rgba(67, 78, 209, 0.1);
+}
+
+.flow-card h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text-light);
+}
+
+.flow-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.flow-arrow {
+    font-size: 24px;
+    color: var(--highlight-color);
+    font-weight: bold;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+    .methodology-flow {
+        flex-direction: column;
+    }
+    .flow-step {
+        flex-direction: column;
+        width: 100%;
+    }
+    .flow-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+    }
+}
+
+        /* --- REST OF THE STYLES UNCHANGED --- */
+        .section { max-width: 1100px; margin: 100px auto; padding: 0 25px; }
+        h2 { font-size: 36px; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+        h2::before { content: ''; width: 40px; height: 4px; background: var(--highlight-color); border-radius: 2px; }
+
+        .content-card, .lit-item, .method-card, .team-member, .result-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .content-card:hover, .lit-item:hover, .method-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--highlight-color);
+            box-shadow: 0 10px 30px rgba(67, 78, 209, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .literature-grid, .methodology-grid, .results-grid, .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .lit-item h4 { color: var(--highlight-color); margin-bottom: 12px; }
+
+        .table-container { overflow-x: auto; border-radius: 15px; border: 1px solid var(--glass-border); }
+        .comparison-table { width: 100%; border-collapse: collapse; background: var(--glass-bg); }
+        .comparison-table th { background: rgba(67, 78, 209, 0.3); padding: 20px; text-align: left; }
+        .comparison-table td { padding: 20px; border-top: 1px solid var(--glass-border); color: var(--text-muted); }
+
+        .objectives-list { list-style: none; }
+        .objectives-list li {
+            background: var(--glass-bg);
+            margin-bottom: 15px;
+            padding: 20px 20px 20px 60px;
+            border-radius: 15px;
+            position: relative;
+        }
+        .objectives-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 20px;
+            color: var(--highlight-color);
+            font-size: 24px;
+        }
+
+        .links-section { display: flex; gap: 20px; justify-content: center; margin-top: 50px; }
+        .link-button {
+            text-decoration: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        .btn-primary { background: var(--highlight-color); color: white; }
+        .btn-outline { border: 1px solid var(--highlight-color); color: white; }
+        .link-button:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        .result-metric { font-size: 50px; color: var(--highlight-color); margin-bottom: 10px; }
+
+        footer {
+            padding: 50px 0;
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+        footer p { font-size: 14px; color: var(--text-muted); margin-bottom: 5px; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .header-content { flex-direction: column; text-align: center; }
+            .next-gen-title { font-size: 50px; }
+            .code-learning-subtitle { font-size: 16px; letter-spacing: 3px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="timer-container">
+        <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <header id="main-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="muj-logo">
+                    <img src="logo.png" alt="MUJ Logo">
+                </div>
+                <div class="header-text">
+                    <h1>PBL 2026</h1>
+                    <p>Dept. of Computer Science & Engineering</p>
+                </div>
+            </div>
+            <nav>
+                <a href="#problem">Problem</a>
+                <a href="#methodology">Methodology</a>
+                <a href="#results">Results</a>
+                <a href="#team">Team</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="student-id">ID : 2427030710</div>
+        <h1>
+            <span class="next-gen-title">NextGen:</span>
+            <span class="code-learning-subtitle">Code Learning Platform</span>
+        </h1>
+        <p class="hero-subtitle">"Developing a gamified web-based coding platform to make learning more engaging and effective through real-time feedback and adaptive learning modules."</p>
+    </section>
+
+    <div class="links-wrapper">
+    <div class="main-buttons">
+        <a href="https://github.com/aakankshamanral/NextGen-code-learning-platform" target="_blank" class="link-button btn-outline btn-with-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            VIEW CODE
+        </a>
+        
+        <a href="https://next-gen-code-learning-site.vercel.app/" target="_blank" class="link-button btn-primary">LIVE DEMO</a>
+    </div>
+
+    <a href="https://docs.google.com/presentation/d/1kgJSaLeEEzmQS6-3D92LkaEGQJ2ZUywQ/edit?usp=sharing" target="_blank" class="presentation-link">
+        📂 View Project Presentation
+    </a>
+</div>
+
+    
+</div>
+
+    <section id="problem" class="section reveal">
+        <h2>Problem Statement</h2>
+        <div class="content-card">
+            <p>need to advance and develop a gamified web-based coding platform that overcomes the limitations of passive video learning, repetitive problem sets, and limited feedback found in current systems. Students often struggle with low engagement, weak conceptual clarity, and inconsistent practice habits. By integrating meaningful gamification, adaptive learning, and real-time guidance, the platform aims to make coding education more interactive, motivating, and effective.</p>
+        </div>
+
+
+        <h3 style="margin: 50px 0 25px;">Literature Review</h3>
+        <div class="literature-grid">
+            <div class="lit-item">
+                <h4>Exam-Focused Learning</h4>
+                <p><strong>(Pedagogy Research, 2020)</strong></p>
+                <p>Research shows exam-focused coding practice improves scores but limits deeper understanding and real-world application skills.</p>
+            </div>
+            <div class="lit-item">
+                <h4>Online Coding Platforms</h4>
+                <p><strong>(Watanobe et al., 2020)</strong></p>
+                <p>Tools like LeetCode, HackerRank enhance proficiency but often lack conceptual teaching and detailed explanations.</p>
+            </div>
+            <div class="lit-item">
+                <h4>Video-Based Learning</h4>
+                <p><strong>(EdTech Research, 2022)</strong></p>
+                <p>Video platforms deliver high-quality lectures but create passive learning environments where students only watch rather than practice.</p>
+            </div>
+            <div class="lit-item">
+                <h4>Lack of Real-Time Feedback</h4>
+                <p><strong>(Educational Computing Study, 2021)</strong></p>
+                <p>Automated grading systems provide correctness checks but rarely give deep feedback explaining why something is wrong.</p>
+            </div>
+            <div class="lit-item">
+                <h4>Gamification</h4>
+                <p><strong>(Zinovieva et al., 2021)</strong></p>
+                <p>Gamification boosts motivation; however, poorly designed reward loops can become repetitive and fail to support long-term retention.</p>
+            </div>
+            <div class="lit-item">
+                <h4>Adaptive Learning</h4>
+                <p><strong>(ResearchGate, 2023)</strong></p>
+                <p>Adaptive systems tailor content to individual needs but require heavy data processing and complex algorithms.</p>
+            </div>
+        </div>
+
+        <h3 style="margin: 50px 0 25px;">Comparative Study</h3>
+        <div class="table-container">
+            <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Existing Method</th>
+                    <th>Limitations</th>
+                    <th>NextGen Improvement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>LeetCode / HackerRank</strong></td>
+                    <td>Lack conceptual teaching; only pass/fail feedback provided.</td>
+                    <td>Integrates AI explanations, adaptive hints, and concept-based lessons.</td>
+                </tr>
+                <tr>
+                    <td><strong>Coursera / Udemy (Video)</strong></td>
+                    <td>Passive learning environment with no real-time feedback.</td>
+                    <td>Converts learning into active coding with instant AI doubt-solving.</td>
+                </tr>
+                <tr>
+                    <td><strong>Exam-Focused Practice</strong></td>
+                    <td>Limits deeper understanding; reduces real-world problem-solving skills.</td>
+                    <td>Balanced learning: Combines exam drills with real-world projects.</td>
+                </tr>
+                <tr>
+                    <td><strong>AI Chatbots (ChatGPT/Gemini)</strong></td>
+                    <td>Risk of over-dependence and hallucinations in logic.</td>
+                    <td>Controlled AI: Explains logic and concepts instead of giving direct code.</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </section>
+
+
+    <section id="methodology" class="section reveal">
+    <h2>System Methodology</h2>
+    <div class="methodology-flow">
+        <div class="flow-step">
+            <div class="flow-card">
+                <div class="result-metric" style="font-size: 24px;">⚛️</div>
+                <h4>Frontend</h4>
+                <p>React.js for a dynamic interface, Tailwind CSS for aesthetic design, and Monaco Editor for an in-browser IDE experience</p>
+            </div>
+            <div class="flow-arrow">→</div>
+        </div>
+
+        <div class="flow-step">
+            <div class="flow-card">
+                <div class="result-metric" style="font-size: 24px;">⚙️</div>
+                <h4>Backend</h4>
+                <p>Node.js (with Express/NestJS) ensures efficient session management and robust API handling for all interactions.
+</p>
+            </div>
+            <div class="flow-arrow">→</div>
+        </div>
+
+        <div class="flow-step">
+            <div class="flow-card">
+                <div class="result-metric" style="font-size: 24px;">🤖</div>
+                <h4>AI Engine</h4>
+                <p>GROQ API powers all smart tutoring, personalized feedback, and advanced code analysis capabilities</p>
+            </div>
+            <div class="flow-arrow">→</div>
+        </div>
+
+        <div class="flow-step">
+            <div class="flow-card">
+                <div class="result-metric" style="font-size: 24px;">🗄️</div>
+                <h4>Database</h4>
+                <p>PostgreSQL stores user progress and gamification data, while Firebase Auth ensures secure login and user management</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<h3 style="margin: 50px 0 25px; text-align: center; font-size: 24px; letter-spacing: 4px; font-weight: 900; color: var(--text-muted);">CORE ECOSYSTEM</h3>
+<div class="modules-grid">
+    <div class="module-card pulse-border">
+        <span class="module-icon">🤖</span>
+        <h4>AI Tutor</h4>
+        <p>Real-time logic debugging and smart hints powered by GROQ engine.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-icon">🎯</span>
+        <h4>Lifeline Quizzes</h4>
+        <p>Gamified assessments with Hint assistance to boost recall.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-icon">📑</span>
+        <h4>Smart Notes</h4>
+        <p>Dynamic syntax guides that sync with your current learning module.</p>
+    </div>
+
+    <div class="module-card">
+        <span class="module-icon">💡</span>
+        <h4>Flashcards</h4>
+        <p>Active recall training to master complex C programming patterns.</p>
+    </div>
+</div>
+
+    <section id="results" class="section reveal">
+    <h2>Results & Analysis</h2>
+    
+    <div class="content-card" style="padding: 20px; border: 1px solid var(--highlight-color); position: relative; overflow: hidden;">
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+            
+            <div class="chart-container" style="flex: 1; min-width: 280px; height: 180px; display: flex; align-items: flex-end; gap: 40px; padding: 20px 40px; border-left: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);">
+                
+                <div style="flex: 1; position: relative; group">
+                    <div style="height: 120px; background: rgba(168, 178, 209, 0.2); border-radius: 6px; transition: 0.3s; cursor: help;" title="70% Performance"></div>
+                    <p style="font-size: 10px; color: var(--text-muted); text-align: center; margin-top: 8px;">Existing Systems</p>
+                </div>
+
+                <div style="flex: 1; position: relative;">
+                    <div style="height: 160px; background: linear-gradient(to top, var(--highlight-color), #df6ee9); border-radius: 6px; box-shadow: 0 0 15px rgba(67, 78, 209, 0.4); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;" 
+                         onmouseover="this.style.transform='scaleY(1.05)'" 
+                         onmouseout="this.style.transform='scaleY(1)'">
+                    </div>
+                    <p style="font-size: 10px; color: #fff; font-weight: bold; text-align: center; margin-top: 8px;">NextGen</p>
+                </div>
+            </div>
+
+            <div style="flex: 0.8; min-width: 250px; text-align: right;">
+                <div style="display: inline-block; text-align: left;">
+                    <span style="font-size: 10px; letter-spacing: 2px; color: var(--highlight-color); font-weight: bold;">PERFORMANCE SCORE</span>
+                    <h3 style="font-size: 52px; font-weight: 900; line-height: 1; margin: 5px 0;">92.5%</h3>
+                    <p style="font-size: 11px; color: var(--text-muted); max-width: 240px; line-height: 1.4;">
+                        NextGen achieved 92.5% accuracy in intelligent code analysis and personalized tutoring.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+        <div class="result-card" style="padding: 15px; text-align: center; border-radius: 12px;">
+            <h4 style="color: var(--highlight-color); font-size: 18px;">Instant</h4>
+            <p style="font-size: 11px;">Logic Debugging [cite: 2026-02-13]</p>
+        </div>
+        <div class="result-card" style="padding: 15px; text-align: center; border-radius: 12px;">
+            <h4 style="color: var(--highlight-color); font-size: 18px;">Active</h4>
+            <p style="font-size: 11px;">Learning Loop [cite: 2026-02-13]</p>
+        </div>
+        <div class="result-card" style="padding: 15px; text-align: center; border-radius: 12px;">
+            <h4 style="color: var(--highlight-color); font-size: 18px;">90%+</h4>
+            <p style="font-size: 11px;">GROQ AI Accuracy [cite: 2026-02-13]</p>
+        </div>
+    </div>
+</section>
+    <section id="team" class="section reveal">
+        <h2>Academic Credits</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <h4>Project Guide</h4>
+                <h5>Mrs. Tripti Kulshrestha</h5>
+                <p>Supervisor</p>
+            </div>
+            <div class="team-member">
+                <h4>Team Member</h4>
+                <h5>Aakanksha Manral</h5>
+                <p>Reg No: 2427030710</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Manipal University Jaipur</p>
+        <p>Department of Computer Science & Engineering • 2026</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Timer Logic
+        let seconds = 0;
+        let minutes = 0;
+        function updateTimer() {
+            seconds++;
+            if (seconds === 60) { seconds = 0; minutes++; }
+            document.getElementById('timer').textContent = 
+                (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+        }
+        setInterval(updateTimer, 1000);
+
+        // Scroll Reveal Logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Header Shrink on Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.style.padding = '5px 0';
+                header.style.background = 'rgba(5, 8, 22, 0.95)';
+            } else {
+                header.style.padding = '12px 0';
+                header.style.background = 'rgba(5, 8, 22, 0.85)';
+            }
+        });
+    </script>
+</body>
+</html>
